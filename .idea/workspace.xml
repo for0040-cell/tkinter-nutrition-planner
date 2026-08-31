@@ -7,7 +7,6 @@
     <list default="true" id="da8c79f1-cc15-4025-a69c-f8b33628fee3" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nutritionPlanner/Multiframe GUI.py" beforeDir="false" afterPath="$PROJECT_DIR$/nutritionPlanner/Multiframe GUI.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nutritionPlanner/meals.csv" beforeDir="false" afterPath="$PROJECT_DIR$/nutritionPlanner/meals.csv" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

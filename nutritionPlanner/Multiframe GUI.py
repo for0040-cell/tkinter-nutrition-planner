@@ -705,20 +705,47 @@ class PageFour(Frame):
 
         resultLbl.grid(row=3, column=0, columnspan=2, pady=10)
 
+        # Scrollable results
+        # Mousewheel scroll binding adapted from JackTheEngineer's Tkinter ScrolledFrame github page
+        # https://gist.github.com/JackTheEngineer/81df334f3dcff09fd19e4169dd560c59
+
+        resultCanvas = Canvas(self, width=450, height=400)
+
+        resultCanvas.grid(row=4, column=0, columnspan=2, padx=10, pady=10)
+
+        scrollbar = Scrollbar(self, orient="vertical", command=resultCanvas.yview)
+
+        scrollbar.grid(row=4, column=2, sticky="ns")
+
+        resultCanvas.configure(yscrollcommand=scrollbar.set)
+
+        resultFrame = Frame(resultCanvas)
+
+        resultCanvas.create_window((0, 0), window=resultFrame, anchor="nw")
+
+        def updateScrollRegion(event):
+            resultCanvas.configure(scrollregion=resultCanvas.bbox("all"))
+
+        resultFrame.bind("<Configure>", updateScrollRegion)
+
+        def _on_mousewheel(event):
+            resultCanvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+
+        def _bind_to_mousewheel(event):
+            resultCanvas.bind_all("<MouseWheel>", _on_mousewheel)
+
+        def _unbind_from_mousewheel(event):
+            resultCanvas.unbind_all("<MouseWheel>")
+
+        resultCanvas.bind("<Enter>", _bind_to_mousewheel)
+
+        resultCanvas.bind("<Leave>", _unbind_from_mousewheel)
         # Search Function
 
         def searchFoodFn():
 
-
-
-
-
-            # Clears old recipe buttons and results
-
-            for widget in self.grid_slaves():
-
-                if int(widget.grid_info()["row"]) >= 4:
-                    widget.destroy()
+            for widget in resultFrame.winfo_children():
+                widget.destroy()
 
             searchFood = searchEntry.get().lower().split()
 
@@ -728,14 +755,13 @@ class PageFour(Frame):
 
             found = False
 
-            rowNumber = 4
+            rowNumber = 0
 
             for row in MealDictReader:
-                if any(word in row["MealName"].lower() for word in searchFood):
-
+                if any(word in row["MealName"].lower().split() for word in searchFood):
                     found = True
 
-                    resultLbl = Label(self, text=row["MealName"] + "\n"+ row["Protein (g)"] + "g protein\n" + row["kcal"] + " kcal\n",
+                    resultLbl = Label(resultFrame, text=row["MealName"] + "\n"+ row["Protein (g)"] + "g protein\n" + row["kcal"] + " kcal\n",
                                     relief="solid", width=35, pady=10)
                     resultLbl.grid(
                         row=rowNumber,
@@ -748,7 +774,7 @@ class PageFour(Frame):
 
                     recipeLbl = Label(
 
-                        self,
+                        resultFrame,
 
                         text="",
                         wraplength=400,
@@ -768,7 +794,7 @@ class PageFour(Frame):
                     def showRecipe(method=row["Method"], label=recipeLbl):
                         label.config(text=method)
 
-                    recipeBtn = Button(self,
+                    recipeBtn = Button(resultFrame,
                                        text="Recipe",
                                        width=15,
                                        command=showRecipe)
@@ -783,10 +809,10 @@ class PageFour(Frame):
             mealFile.close()
 
             if found == False:
-                errorLbl = Label(self, text="Meal not found")
+                errorLbl = Label(resultFrame, text="Meal not found")
 
                 errorLbl.grid(
-                    row=4,
+                    row=0,
                     column=0,
                     columnspan=2,
                     pady=10
