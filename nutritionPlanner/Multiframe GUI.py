@@ -1,13 +1,7 @@
 from tkinter import *
 import csv
 
-#Steps to success
-# - Make copies of this file
-# - Add and remove pages as necessary, name appropriately.
-# - Layout widgets (Buttons, Labels, etc)
-# - Link pages
-# - Write in algorithms.
-
+# <editor-fold desc="Window generator">
 ##---------------------------------------------------------------------------##
 #                           Window Generator                                 #
 ##---------------------------------------------------------------------------##
@@ -73,11 +67,13 @@ class solution(Tk):
 
         frame = self.frames[cont]
         frame.tkraise()
+# </editor-fold>
 
-        ##---------------------------------------------------------------------------##
-        #                                Page One
-        #                                Login Page                                  #
-        ##---------------------------------------------------------------------------##
+# <editor-fold desc="Login page">
+##---------------------------------------------------------------------------##
+#                                Page One
+#                                Login Page                                  #
+##---------------------------------------------------------------------------##
 
 class loginPage(Frame):
 
@@ -160,8 +156,9 @@ class loginPage(Frame):
                                   command=loginFn)
 
                 loginBtn.grid(row=5, column=0, columnspan=2, pady=15)
+# </editor-fold>
 
-
+# <editor-fold desc="Nutrition dashboard">
 ##---------------------------------------------------------------------------##
 #                                   Page One                                  #
 #                              Nutrition Dashboard                            #
@@ -284,6 +281,9 @@ class PageOne(Frame):
                            command=lambda: controller.show_frame(loginPage))
 
         logoutBtn.grid(row=7, column=1)
+# </editor-fold>
+
+# <editor-fold desc="Edit profile page">
 ##---------------------------------------------------------------------------##
 #                                   Page Two                                  #
 #                              Edit Profile Page                              #
@@ -367,14 +367,15 @@ class PageTwo(Frame):
         #Weight Label
         WeightLbl = Label(self,
                            text="Current weight (kg)")
-
         WeightLbl.grid(row=4, column=0, padx=20, pady=10)
 
 
         #Weight Entry
         WeightEntry = Entry(self, width=25)
-
         WeightEntry.grid(row=4, column=1)
+
+        errorLbl = Label(self, text="", fg="red")
+        errorLbl.grid(row=5, column=0, columnspan=2)
 
 
         ##-------------------------------------------------------------------##
@@ -384,36 +385,52 @@ class PageTwo(Frame):
         #Saves user information and updates PageOne
         def saveProfileFn():
             # Gets the user's details
-
             selectedGoal = goalVar.get()
-            height = float(HeightEntry.get())
-            weight = float(WeightEntry.get())
+
+            try:
+                height = float(HeightEntry.get())
+                weight = float(WeightEntry.get())
+            except ValueError:
+                errorLbl.config(text="Height and weight must be numbers.")
+                return
+
+            if height < 100 or height > 250:
+                errorLbl.config(text="Please enter a height between 100 and 250 cm.")
+                return
+            if weight < 30 or weight > 250:
+                errorLbl.config(text="Please enter a weight between 30 and 250 kg.")
+                return
+
+            if selectedGoal == "Select Goal":
+                errorLbl.config(text="Please select a goal.")
+
+                return
 
             if selectedGoal == "Lose Weight":
-                dailyCalories = weight * 25
-                dailyProtein = weight * 1.6
+                    dailyCalories = weight * 25
+                    dailyProtein = weight * 1.6
 
             elif selectedGoal == "Gain Weight":
-                dailyCalories = weight * 35
-                dailyProtein = weight * 1.6
+                    dailyCalories = weight * 35
+                    dailyProtein = weight * 1.6
 
             elif selectedGoal == "Gain Muscle":
-                dailyCalories = weight * 30
-                dailyProtein = weight * 2.0
+                    dailyCalories = weight * 30
+                    dailyProtein = weight * 2.0
 
             elif selectedGoal == "Maintain Weight":
-                dailyCalories = weight * 30
-                dailyProtein = weight * 1.6
+                    dailyCalories = weight * 30
+                    dailyProtein = weight * 1.6
 
             elif selectedGoal == "Improve Fitness":
-                dailyCalories = weight * 30
-                dailyProtein = weight * 1.6
+                    dailyCalories = weight * 30
+                    dailyProtein = weight * 1.6
 
             elif selectedGoal == "Improve Healthy Eating":
-                dailyCalories = weight * 30
-                dailyProtein = weight * 1.6
+                    dailyCalories = weight * 30
+                    dailyProtein = weight * 1.6
 
-                # Saves the information
+                    # Saves the information
 
             controller.goal.set(selectedGoal)
 
@@ -448,7 +465,9 @@ class PageTwo(Frame):
                          command=lambda: controller.show_frame(PageOne))
 
         backBtn.grid(row=6, column=0, pady=15)
+# </editor-fold>
 
+# <editor-fold desc="Generate meal plan">
 ##---------------------------------------------------------------------------##
 #                                Page Three                                   #
 #                          Generate Meal Plan                                 #
@@ -666,7 +685,9 @@ class PageThree(Frame):
                          command=lambda: controller.show_frame(PageOne))
 
         backBtn.grid(row=7, column=0, pady=15)
+# </editor-fold>
 
+# <editor-fold desc="Search foods page">
 ##---------------------------------------------------------------------------##
 #                                Page Three                                   #
 #                               Search foods                                  #
@@ -833,6 +854,7 @@ class PageFour(Frame):
                          command=lambda: controller.show_frame(PageOne))
 
         backBtn.grid(row=3, column=0,columnspan=2 , pady=15)
+# </editor-foldsease
 
 
 app = solution()
