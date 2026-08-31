@@ -257,13 +257,6 @@ class PageOne(Frame):
         mealPlanBtn.grid(row=6, column=0, pady=20)
 
 
-        #Opens the food logging page
-        foodLogBtn = Button(self,
-                            text="Log Food",
-                            width=20)
-
-        foodLogBtn.grid(row=6, column=1)
-
 
         #Opens the profile editing page
         profileBtn = Button(self,
@@ -274,13 +267,6 @@ class PageOne(Frame):
         profileBtn.grid(row=7, column=0, pady=10)
 
 
-        #favourite meals feature
-        favouriteBtn = Button(self,
-                              text="Favourite Meals",
-                              width=20)
-
-        favouriteBtn.grid(row=7, column=1)
-
 
         #search feature
         nutritionBtn = Button(self,
@@ -288,7 +274,7 @@ class PageOne(Frame):
                               width=20,
                               command=lambda: controller.show_frame(PageFour))
 
-        nutritionBtn.grid(row=8, column=0, pady=10)
+        nutritionBtn.grid(row=6, column=1, pady=10)
 
 
         #Logout Button
@@ -297,7 +283,7 @@ class PageOne(Frame):
                            width=20,
                            command=lambda: controller.show_frame(loginPage))
 
-        logoutBtn.grid(row=8, column=1)
+        logoutBtn.grid(row=7, column=1)
 ##---------------------------------------------------------------------------##
 #                                   Page Two                                  #
 #                              Edit Profile Page                              #
@@ -338,10 +324,7 @@ class PageTwo(Frame):
 
         goalLbl.grid(row=2, column=0, padx=20, pady=10)
 
-        # Goal Entry
-        goalEntry = Entry(self, width=25)
 
-        goalEntry.grid(row=2, column=1)
 
         # Dropdown variable for storing selected goal
         goalVar = StringVar()
@@ -508,6 +491,20 @@ class PageThree(Frame):
             pady=5
         )
 
+        # Page Subtitle
+        searchReminder = Label(
+            self,
+            text="Search Meals given to find recipe",
+            font=("Arial", 12)
+        )
+
+        searchReminder.grid(
+            row=2,
+            column=0,
+            columnspan=3,
+            pady=5
+        )
+
         ##-------------------------------------------------------------------##
         #                              Current Goal                          #
         ##-------------------------------------------------------------------##
@@ -519,7 +516,7 @@ class PageThree(Frame):
         )
 
         goalLbl.grid(
-            row=2,
+            row=3,
             column=0,
             padx=10,
             pady=10
@@ -534,7 +531,7 @@ class PageThree(Frame):
         )
 
         goalOutputLbl.grid(
-            row=2,
+            row=3,
             column=1,
             padx=10,
             pady=10
@@ -547,7 +544,7 @@ class PageThree(Frame):
         mealFrame = Frame(self)
 
         mealFrame.grid(
-            row=4,
+            row=6,
             column=0,
             columnspan=3,
             padx=20,
@@ -668,7 +665,7 @@ class PageThree(Frame):
                          width=20,
                          command=lambda: controller.show_frame(PageOne))
 
-        backBtn.grid(row=6, column=0, pady=15)
+        backBtn.grid(row=7, column=0, pady=15)
 
 ##---------------------------------------------------------------------------##
 #                                Page Three                                   #
