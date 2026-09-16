@@ -45,7 +45,8 @@ class solution(Tk):
         #                                   MENU BAR                                  #
         ##---------------------------------------------------------------------------##
 
-        #Dictionary of Frames
+
+        # Stores each page frame so the program can switch between pages
         self.frames = {}
 
         # User Profile Variables
@@ -55,7 +56,7 @@ class solution(Tk):
         self.calories = StringVar(value="Not Set")
         self.protein = StringVar(value="Not Set")
 
-        for F in (loginPage, PageOne, PageTwo, PageThree, PageFour): #Add new class frames here.
+        for F in (loginPage, nutritionDashboard, PageTwo, PageThree, PageFour): #Add new class frames here.
 
             frame = F(gui, self)
             self.frames[F] = frame
@@ -136,7 +137,7 @@ class loginPage(Frame):
                         errorLbl.config(text="")
 
                         # Open the dashboard
-                        controller.show_frame(PageOne)
+                        controller.show_frame(nutritionDashboard)
 
                     else:
 
@@ -164,7 +165,7 @@ class loginPage(Frame):
 #                              Nutrition Dashboard                            #
 ##---------------------------------------------------------------------------##
 
-class PageOne(Frame):
+class nutritionDashboard(Frame):
 
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
@@ -210,35 +211,31 @@ class PageOne(Frame):
 
 
 
-        #Protien Label
-        ProteinLbl = Label(self,
+        #Protein Label
+        proteinLbl = Label(self,
                            text="protein (g):")
 
-        ProteinLbl.grid(row=3, column=0, padx=20, pady=10, sticky="w")
+        proteinLbl.grid(row=3, column=0, padx=20, pady=10, sticky="w")
 
-        ProteinOutputLbl = Label(self,
+        proteinOutputLbl = Label(self,
                                  textvariable=controller.protein,
                                  relief="solid",
                                  width=25)
 
-        ProteinOutputLbl.grid(row=3, column=1, padx=10)
+        proteinOutputLbl.grid(row=3, column=1, padx=10)
 
 
         #Calories Label
-        CaloriesLbl = Label(self,
+        caloriesLbl = Label(self,
                            text="Calories (kcal):")
 
-        CaloriesLbl.grid(row=4, column=0, padx=20, pady=10, sticky="w")
+        caloriesLbl.grid(row=4, column=0, padx=20, pady=10, sticky="w")
 
-        CaloriesOutputLbl = Label(self,
-
+        caloriesOutputLbl = Label(self,
                                   textvariable=controller.calories,
-
                                   relief="solid",
-
                                   width=25)
-
-        CaloriesOutputLbl.grid(row=4, column=1, padx=10)
+        caloriesOutputLbl.grid(row=4, column=1, padx=10)
 
 
         ##-------------------------------------------------------------------##
@@ -352,27 +349,27 @@ class PageTwo(Frame):
 
 
         #Height Label
-        HeightLbl = Label(self,
+        heightLbl = Label(self,
                            text="Height (cm)")
 
-        HeightLbl.grid(row=3, column=0, padx=20, pady=10)
+        heightLbl.grid(row=3, column=0, padx=20, pady=10)
 
 
         #Height Entry
-        HeightEntry = Entry(self, width=25)
+        heightEntry = Entry(self, width=25)
 
-        HeightEntry.grid(row=3, column=1)
+        heightEntry.grid(row=3, column=1)
 
 
         #Weight Label
-        WeightLbl = Label(self,
+        weightLbl = Label(self,
                            text="Current weight (kg)")
-        WeightLbl.grid(row=4, column=0, padx=20, pady=10)
+        weightLbl.grid(row=4, column=0, padx=20, pady=10)
 
 
         #Weight Entry
-        WeightEntry = Entry(self, width=25)
-        WeightEntry.grid(row=4, column=1)
+        weightEntry = Entry(self, width=25)
+        weightEntry.grid(row=4, column=1)
 
         errorLbl = Label(self, text="", fg="red")
         errorLbl.grid(row=5, column=0, columnspan=2)
@@ -382,23 +379,23 @@ class PageTwo(Frame):
         #                         Button Functions                           #
         ##-------------------------------------------------------------------##
 
-        #Saves user information and updates PageOne
+        #Saves user information and updates nutritionDashboard
         def saveProfileFn():
             # Gets the user's details
             selectedGoal = goalVar.get()
 
             try:
-                height = float(HeightEntry.get())
-                weight = float(WeightEntry.get())
+                height = float(heightEntry.get())
+                weight = float(weightEntry.get())
             except ValueError:
-                errorLbl.config(text="Height and weight must be numbers.")
+                errorLbl.config(text="Height and weight must be numbers and entered.")
                 return
 
-            if height < 100 or height > 250:
-                errorLbl.config(text="Please enter a height between 100 and 250 cm.")
+            if height < 50 or height > 275:
+                errorLbl.config(text="Please enter a height between 50 and 275 cm.")
                 return
-            if weight < 30 or weight > 250:
-                errorLbl.config(text="Please enter a weight between 30 and 250 kg.")
+            if weight < 1 or weight > 650:
+                errorLbl.config(text="Please enter a weight between 1 and 650 kg.")
                 return
 
             if selectedGoal == "Select Goal":
@@ -440,7 +437,7 @@ class PageTwo(Frame):
 
 
             #Returns user to dashboard
-            controller.show_frame(PageOne)
+            controller.show_frame(nutritionDashboard)
 
             return ()
 
@@ -462,7 +459,7 @@ class PageTwo(Frame):
         backBtn = Button(self,
                          text="Back",
                          width=20,
-                         command=lambda: controller.show_frame(PageOne))
+                         command=lambda: controller.show_frame(nutritionDashboard))
 
         backBtn.grid(row=6, column=0, pady=15)
 # </editor-fold>
@@ -483,13 +480,13 @@ class PageThree(Frame):
         ##-------------------------------------------------------------------##
 
         # Page Title
-        MealplanTitle = Label(
+        mealplanTitle = Label(
             self,
             text="Generate Meal Plan",
             font=("Arial", 18, "bold")
         )
 
-        MealplanTitle.grid(
+        mealplanTitle.grid(
             row=0,
             column=0,
             columnspan=3,
@@ -497,13 +494,13 @@ class PageThree(Frame):
         )
 
         # Page Subtitle
-        MealplanSubtitle = Label(
+        mealplanSubtitle = Label(
             self,
             text="Meals that align with your goals",
             font=("Arial", 14)
         )
 
-        MealplanSubtitle.grid(
+        mealplanSubtitle.grid(
             row=1,
             column=0,
             columnspan=3,
@@ -606,12 +603,12 @@ class PageThree(Frame):
             mealFile = open("meals.csv")
 
             # Read csv file
-            MealDictReader = csv.DictReader(mealFile)
+            mealDictReader = csv.DictReader(mealFile)
 
             rowNumber = 0
 
             # Go through each meal in the CSV file
-            for row in MealDictReader:
+            for row in mealDictReader:
 
                 # Check if the meal matches the user's goal
                 if row["Goal"] == selectedGoal:
@@ -660,6 +657,10 @@ class PageThree(Frame):
 
             mealFile.close()
 
+            if rowNumber == 0:
+                noMealsLbl = Label(mealFrame, text="No meals found for this goal.")
+                noMealsLbl.grid(row=0, column=0, columnspan=3, pady=10)
+
         ##-------------------------------------------------------------------##
         #                              Button                                #
         ##-------------------------------------------------------------------##
@@ -682,7 +683,7 @@ class PageThree(Frame):
         backBtn = Button(self,
                          text="Back",
                          width=20,
-                         command=lambda: controller.show_frame(PageOne))
+                         command=lambda: controller.show_frame(nutritionDashboard))
 
         backBtn.grid(row=7, column=0, pady=15)
 # </editor-fold>
@@ -696,7 +697,7 @@ class PageFour(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
 
-        # Page Title
+        #Page Title
 
         pageTitle = Label(self,
 
@@ -706,7 +707,7 @@ class PageFour(Frame):
 
         pageTitle.grid(row=0, column=0, columnspan=2, pady=20)
 
-        # Instructions
+        #Instructions
 
         instructionLbl = Label(self,
 
@@ -714,13 +715,13 @@ class PageFour(Frame):
 
         instructionLbl.grid(row=1, column=0, columnspan=2, pady=5)
 
-        # Search Box
+        #Search Box
 
         searchEntry = Entry(self, width=30)
 
         searchEntry.grid(row=2, column=0, padx=10, pady=10)
 
-        # Result
+        #Result
 
         resultLbl = Label(self, text="")
 
@@ -761,27 +762,36 @@ class PageFour(Frame):
         resultCanvas.bind("<Enter>", _bind_to_mousewheel)
 
         resultCanvas.bind("<Leave>", _unbind_from_mousewheel)
-        # Search Function
+        #end of adapted code
 
+        #Search Function
         def searchFoodFn():
 
+            #Gets all widgets inside resultFrame and removes them
+            #to clear the previous search results before displaying new results
             for widget in resultFrame.winfo_children():
                 widget.destroy()
 
-            searchFood = searchEntry.get().lower().split()
+            searchFood = searchEntry.get().lower()
+
+            if searchFood == "":
+                errorLbl = Label(resultFrame, text="Please enter a search term")
+                errorLbl.grid(row=0, column=0, columnspan=2, pady=10)
+                return
 
             mealFile = open("meals.csv")
 
-            MealDictReader = csv.DictReader(mealFile)
+            # Reads each row of the CSV file as a dictionary
+            mealDictReader = csv.DictReader(mealFile)
 
             found = False
 
             rowNumber = 0
 
-            for row in MealDictReader:
-                if any(word in row["MealName"].lower().split() for word in searchFood):
+            for row in mealDictReader:
+                if searchFood in row["MealName"].lower():
                     found = True
-
+                    # Displays the matching meal's name, protein and calories
                     resultLbl = Label(resultFrame, text=row["MealName"] + "\n"+ row["Protein (g)"] + "g protein\n" + row["kcal"] + " kcal\n",
                                     relief="solid", width=35, pady=10)
                     resultLbl.grid(
@@ -839,7 +849,7 @@ class PageFour(Frame):
                     pady=10
                 )
 
-         # Search Button
+         #Search Button
 
         searchBtn = Button(self,
                             text="Search",
@@ -851,10 +861,10 @@ class PageFour(Frame):
         backBtn = Button(self,
                          text="Back",
                          width=20,
-                         command=lambda: controller.show_frame(PageOne))
+                         command=lambda: controller.show_frame(nutritionDashboard))
 
         backBtn.grid(row=3, column=0,columnspan=2 , pady=15)
-# </editor-foldsease
+# </editor-fold>
 
 
 app = solution()
