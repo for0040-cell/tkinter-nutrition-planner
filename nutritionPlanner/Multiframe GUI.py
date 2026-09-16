@@ -6,6 +6,15 @@ import csv
 #                           Window Generator                                 #
 ##---------------------------------------------------------------------------##
 
+# This solution uses a single-window, multi-frame architecture:
+# every page (login, dashboard, edit profile, meal plan, search) is
+# built as its own Frame class, and all frames are created once and
+# stacked on top of each other. Navigating between "pages" doesn't
+# open new windows - it calls show_frame() to raise the requested
+# frame to the top, hiding the others. Shared data (goal, calories,
+# protein) is stored on the controller (self) so every frame can
+# access the same values regardless of which frame is currently shown.
+
 class solution(Tk):
     def __init__(self, *args, **kwargs): #args etc are overrides to allow us to run multiple arguments/operations
 
@@ -598,6 +607,15 @@ class PageThree(Frame):
             ##-------------------------------------------------------------------##
             #                              Read CSV File                          #
             ##-------------------------------------------------------------------##
+
+            # meals.csv structure:
+            # Each row represents one meal, with the following columns:
+            # - MealName: the name of the meal (string)
+            # - Goal: which nutrition goal this meal supports (must match one of the six goal options)
+            # - Protein (g): protein content in grams (string, converted for display)
+            # - kcal: calorie content (string, converted for display)
+            # - Ingredients: list of ingredients used in the recipe
+            # - Method: the recipe/preparation instructions shown when "Recipe" is clicked
 
             # Open csv file
             mealFile = open("meals.csv")
